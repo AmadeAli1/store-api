@@ -1,7 +1,6 @@
 package com.amade.storeapi.repository
 
 import com.amade.storeapi.model.User
-import kotlinx.coroutines.flow.Flow
 import org.springframework.data.r2dbc.repository.Modifying
 import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
@@ -22,5 +21,4 @@ interface UserRepository : CoroutineCrudRepository<User, String> {
     @Modifying
     @Query("DELETE FROM usuario where id=:id")
     suspend fun delete(id: String): Int
-
 }
