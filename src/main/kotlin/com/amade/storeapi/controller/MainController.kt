@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.kotlin.core.publisher.toMono
 
 @RestController
-@RequestMapping("/main")
+@RequestMapping
 class MainController {
 
     @GetMapping("/hello")
