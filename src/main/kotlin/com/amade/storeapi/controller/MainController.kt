@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.kotlin.core.publisher.toMono
 
 @RestController
-@RequestMapping
+@RequestMapping("/main")
 class MainController {
 
-    @GetMapping("/hello")
+    @GetMapping
     fun sayHello() = "Hello Amade Ali".toMono()
 
 
