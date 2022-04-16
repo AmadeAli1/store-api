@@ -1,5 +1,6 @@
 package com.amade.storeapi.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.validator.constraints.Length
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
@@ -13,14 +14,12 @@ import javax.validation.constraints.NotNull
 data class Item(
     @Id @Column("id") val id: Int,
     @NotNull @NotBlank @Length(max = 50, min = 5) @Column("name") val name: String,
-    @NotNull @NotBlank @Column("category") val category: String,
     @NotNull @NotBlank @Min(1) @Column("price") var price: Float,
     @NotNull @NotBlank @Column("image") var image: String,
-    @NotNull @NotBlank @Column("companyid") val companyId: Int,
-    @NotNull @NotBlank @Column("categoryid") val categoryId: Int,
+    @JsonIgnore @NotNull @NotBlank @Column("companyid") var companyId: Int,
+    @JsonIgnore @NotNull @NotBlank @Column("categoryid") val categoryId: Int,
 ) {
-    @NotNull
-    @NotBlank
+
     @Column("date")
     lateinit var date: Date
 }
