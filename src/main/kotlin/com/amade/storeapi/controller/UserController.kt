@@ -15,7 +15,6 @@ import javax.validation.Valid
 class UserController(
     private val userService: UserService,
 ) {
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     suspend fun findAll(): Flow<User> {
@@ -41,7 +40,9 @@ class UserController(
             val response: User?
             try {
                 response = userService.save(user)
+                println("Response: $response")
             } catch (e: Exception) {
+                println("Exception: ${e.message}")
                 return@withContext ResponseEntity<User>(HttpStatus.BAD_REQUEST)
             }
             ResponseEntity(response, HttpStatus.CREATED)

@@ -11,7 +11,11 @@ class UserService(
 ) {
 
     suspend fun save(user: User): User {
-        return userRepository.save(user)
+        val status = userRepository.insert(user.id, user.email, user.name, user.image)
+        if (status == 1) {
+            return findUser(user.id)!!
+        }
+        throw RuntimeException("Erro ao gravar o usuario")
     }
 
     suspend fun findAll(): Flow<User> {

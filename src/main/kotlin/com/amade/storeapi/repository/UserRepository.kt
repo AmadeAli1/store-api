@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository
 interface UserRepository : CoroutineCrudRepository<User, String> {
 
     @Modifying
+    @Query("INSERT INTO usuario values(:?1,:?2,:?3,:?4)")
+    suspend fun insert(id: String, email: String, name: String, image: String?): Int
+
+    @Modifying
     @Query("UPDATE usuario SET image=:image where id=:id")
     suspend fun update(id: String, image: String?): Int
 
