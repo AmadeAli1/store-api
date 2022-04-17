@@ -12,14 +12,18 @@ import javax.validation.constraints.NotNull
 
 @Table("item")
 data class Item(
-    @Id @Column("id") val id: Int,
     @NotNull @NotBlank @Length(max = 50, min = 5) @Column("name") val name: String,
     @NotNull @NotBlank @Min(1) @Column("price") var price: Float,
     @NotNull @NotBlank @Column("image") var image: String,
-    @JsonIgnore @NotNull @NotBlank @Column("companyid") var companyId: Int,
-    @JsonIgnore @NotNull @NotBlank @Column("categoryid") val categoryId: Int,
+    @NotNull @NotBlank @Column("companyid") var company: Int,
+    @NotNull @NotBlank @Column("categoryid") var category: Int,
 ) {
+    @Id
+    @Column("id")
+    var id: Int = 0
 
     @Column("date")
-    lateinit var date: Date
+    @org.springframework.data.annotation.Transient
+    var date: Date = Date(System.currentTimeMillis())
+
 }

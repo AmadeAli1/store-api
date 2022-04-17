@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull
 
 @Table("category")
 data class Category(
-    @NotBlank @NotNull @Id val id: Int,
     @NotNull @NotBlank val name: String,
-)
+) {
+    @Id
+    var id: Int = 0
+}

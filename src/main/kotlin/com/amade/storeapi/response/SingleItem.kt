@@ -6,9 +6,9 @@ import com.amade.storeapi.model.Item
 import kotlinx.coroutines.flow.Flow
 
 data class SingleItem(
-    val category: Category,
-    val company: Company,
-    val item: Item,
+    val category: Category?,
+    val company: Company?,
+    val item: Item?,
 ) {
 
 }

@@ -2,15 +2,15 @@ package com.amade.storeapi.service
 
 import com.amade.storeapi.model.Item
 import com.amade.storeapi.repository.ItemRepository
-import com.amade.storeapi.response.ResponseItem
 import com.amade.storeapi.response.SingleItem
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import org.springframework.beans.factory.config.ConfigurableBeanFactory
+import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Service
 
 @Service
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 class ItemService(
     private val itemRepository: ItemRepository,
     private val categoryService: CategoryService,
@@ -18,29 +18,24 @@ class ItemService(
 ) {
 
     suspend fun insert(item: Item): SingleItem? {
-        val category = categoryService.findCategory(id = item.categoryId)
-        val company = companyService.findCompany(id = item.companyId)
-
-        if (category != null && company != null) {
-            val newItem = itemRepository.save(item)
-            return SingleItem(category, company, newItem)
-        }
-
-        return null
+        val company = companyService.findCompany(item.company)
+        val category = categoryService.findCategory(item.category)
+        val newItem = itemRepository.save(item);
+        return SingleItem(category, company, newItem)
     }
 
     suspend fun update(item: Item): SingleItem {
         return itemRepository.save(item).let {
-            val company = companyService.findCompany(it.companyId)
-            val category = categoryService.findCategory(it.categoryId)
+            val company = companyService.findCompany(it.company)
+            val category = categoryService.findCategory(it.category)
             SingleItem(category!!, company!!, item = it)
         }
     }
 
     suspend fun findItem(id: Int): SingleItem? {
         return itemRepository.findById(id).let {
-            val company = companyService.findCompany(it!!.companyId)
-            val category = categoryService.findCategory(it.categoryId)
+            val company = companyService.findCompany(it!!.company)
+            val category = categoryService.findCategory(it.category)
             SingleItem(category!!, company!!, item = it)
         }
     }
@@ -65,20 +60,24 @@ class ItemService(
         }
     }
 
-    suspend fun findItemsInWishlist(userId: String): Flow<Item> {
+    suspend fun findItemsInWishlist(userId: String): Flow<SingleItem> {
         return try {
-            itemRepository.findWhitlistItems(userId = userId)
+            val items = itemRepository.findWhitlistItems(userId = userId)
+            items.map {
+                val company = companyService.findCompany(it.company)
+                val category = categoryService.findCategory(it.category)
+                SingleItem(category!!, company!!, it)
+            }
         } catch (e: Exception) {
             throw RuntimeException(e.message)
         }
     }
 
-    @OptIn(FlowPreview::class)
-    suspend fun findAll(): Flow<ResponseItem> {
-        return itemRepository.findAll().flatMapConcat {
-            val company = companyService.findCompany(it.companyId)
-            val category = categoryService.findCategory(it.categoryId)
-            flowOf(ResponseItem(category!!, company!!, flowOf(it)))
+    suspend fun findAll(): Flow<SingleItem> {
+        return itemRepository.findAll().map {
+            val company = companyService.findCompany(it.company)
+            val category = categoryService.findCategory(it.category)
+            SingleItem(category!!, company!!, it)
         }
     }
 

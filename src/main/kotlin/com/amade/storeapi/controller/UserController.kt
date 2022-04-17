@@ -12,7 +12,8 @@ import javax.validation.Valid
 
 @RequestMapping("/users")
 @RestController
-class UserController(
+class
+UserController(
     private val userService: UserService,
 ) {
     @ResponseStatus(HttpStatus.OK)
