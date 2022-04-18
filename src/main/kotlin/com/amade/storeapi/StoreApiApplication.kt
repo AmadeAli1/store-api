@@ -12,7 +12,6 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator
 class StoreApiApplication {
     @Bean
     fun initializer(connectionFactory: ConnectionFactory): ConnectionFactoryInitializer {
-        println("New Called")
         val initializer = ConnectionFactoryInitializer()
         initializer.setConnectionFactory(connectionFactory)
         val populator = ResourceDatabasePopulator(ClassPathResource("schema.sql"))

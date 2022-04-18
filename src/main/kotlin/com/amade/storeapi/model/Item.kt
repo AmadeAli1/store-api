@@ -1,6 +1,5 @@
 package com.amade.storeapi.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.validator.constraints.Length
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
