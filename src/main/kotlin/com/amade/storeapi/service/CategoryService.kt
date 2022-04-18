@@ -16,4 +16,6 @@ class CategoryService(
     suspend fun findCategory(id: Int) = categoryRepository.findById(id)
 
     suspend fun findAll() = categoryRepository.findAll()
+
+    suspend fun delete(id:Int) = categoryRepository.delete(id)
 }

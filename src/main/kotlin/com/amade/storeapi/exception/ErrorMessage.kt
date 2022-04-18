@@ -1,20 +1,23 @@
-package com.amade.storeapi.exception;
+package com.amade.storeapi.exception
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-
-import java.util.List;
+import lombok.AllArgsConstructor
+import lombok.Getter
+import lombok.NoArgsConstructor
+import lombok.ToString
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @ToString
-public class ErrorMessage {
-    private String message;
-    private Integer requestStatus;
-    private List<ErrorAtribute> erros;
+data class ErrorMessage(
+    val message: String? = null,
+    val requestStatus: Int? = null,
+    var erro: ErrorAtribute,
 
+    ) {
 
-    public record ErrorAtribute(String field, String message) {
-    }
+    data class ErrorAtribute(
+        val field: String? = null,
+        val message: String? = null,
+    )
 }

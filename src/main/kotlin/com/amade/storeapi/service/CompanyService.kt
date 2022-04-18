@@ -14,7 +14,7 @@ class CompanyService(
 
     suspend fun insertOrUpdate(company: Company): Company = companyRepository.save(company)
 
-    suspend fun delete(id: Int) = companyRepository.deleteById(id)
+    suspend fun delete(id: Int) = companyRepository.delete(id)
 
     suspend fun findCompany(id: Int) = companyRepository.findById(id)
 

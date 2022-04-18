@@ -10,11 +10,11 @@ import javax.validation.constraints.NotNull
 
 @Table("company")
 data class Company(
-    @NotNull @NotBlank @Length(max = 50, min = 3) var name: String,
-    @NotNull @NotBlank @Email var email: String,
-    @NotNull @NotBlank @Length(max = 20, min = 5) var contact: String,
-    @NotNull @NotBlank @Length(max = 40, min = 5) var region: String,
-    @NotNull @NotBlank @Column("imagelogo")var image: String? = null,
+    @field:NotNull @field:NotBlank @field:Length(max = 50, min = 3) var name: String,
+    @field:NotNull @field:NotBlank @field:Email var email: String,
+    @field:NotNull @field:NotBlank @field:Length(max = 20, min = 5) var contact: String,
+    @field:NotNull @field:NotBlank @field:Length(max = 40, min = 5) var region: String,
+    @field:NotNull @field:NotBlank @Column("imagelogo") var image: String? = null,
 ) {
     @Id
     var id: Int = 0

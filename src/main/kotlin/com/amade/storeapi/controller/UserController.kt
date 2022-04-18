@@ -41,7 +41,6 @@ UserController(
             val response: User?
             try {
                 response = userService.save(user)
-                println("Response: $response")
             } catch (e: Exception) {
                 println("Exception: ${e.message}")
                 return@withContext ResponseEntity<User>(HttpStatus.BAD_REQUEST)
@@ -71,5 +70,6 @@ UserController(
             ResponseEntity("Usuario nao encontrado.", HttpStatus.NOT_FOUND)
         }
     }
+
 
 }
