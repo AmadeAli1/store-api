@@ -4,4 +4,5 @@ object Constants {
     const val BASE_URL = "https://amade-store.herokuapp.com"
     const val SUCCESS = 1
     const val FAILED = 0
+    const val HOMEPAGE = "home.html"
 }
