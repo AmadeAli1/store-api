@@ -25,13 +25,13 @@ UserController(
     }
 
     @GetMapping("/{id}")
-    suspend fun findUser(@PathVariable("id") id: String): ResponseEntity<User> {
+    suspend fun findUser(@PathVariable("id") id: String): ResponseEntity<Any> {
         return withContext(Dispatchers.IO) {
             val response = userService.findUser(id)
             if (response != null) {
-                return@withContext ResponseEntity(response, HttpStatus.OK)
+                return@withContext ResponseEntity(response, HttpStatus.FOUND)
             }
-            ResponseEntity(HttpStatus.BAD_REQUEST)
+            ResponseEntity("Usuario nao encontrado",HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -42,7 +42,6 @@ UserController(
             try {
                 response = userService.save(user)
             } catch (e: Exception) {
-                println("Exception: ${e.message}")
                 return@withContext ResponseEntity<User>(HttpStatus.BAD_REQUEST)
             }
             ResponseEntity(response, HttpStatus.CREATED)
@@ -60,7 +59,7 @@ UserController(
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     suspend fun delete(@PathVariable("id") id: String): ResponseEntity<String> {
         return withContext(Dispatchers.IO) {
             val status = userService.delete(id)
