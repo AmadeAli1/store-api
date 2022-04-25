@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/6619fcb89e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/login.css}" href="../static/css/login.css">
+    <title>Login</title>
+</head>
+
+<body>
+
+
+    <main class="container">
+        <h2>Login</h2>
+
+        <form action="POST">
+
+            <div class="input-field">
+                <input type="text" name="username" id="username" placeholder="Enter your email">
+                <div class="underline"></div>
+            </div>
+
+            <div class="input-field">
+                <input type="password" name="password" id="password" placeholder="Enter your password">
+                <div class="underline"></div>
+            </div>
+
+            <input type="submit" value="Continue">
+
+            <div class="forget-password">
+                <a href="#">Forget Password?</a>
+            </div>
+        </form>
+
+
+        <div class="footer">
+            <div class="google-field">
+                <div class="button">
+                    <a href="#">
+                        <i class="fab fa-google"></i>
+                        Login with google
+                    </a>
+                </div>
+            </div>
+
+            <a href="http://localhost:8080/signup" th:href="@{/signup}">
+                Create new account
+            </a>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

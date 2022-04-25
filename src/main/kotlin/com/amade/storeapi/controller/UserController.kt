@@ -1,5 +1,6 @@
 package com.amade.storeapi.controller
 
+import com.amade.storeapi.model.Constants
 import com.amade.storeapi.model.User
 import com.amade.storeapi.service.UserService
 import kotlinx.coroutines.Dispatchers
@@ -7,7 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.reactive.result.view.Rendering
 import javax.validation.Valid
 
 @RequestMapping("/users")
@@ -38,6 +41,7 @@ UserController(
     @PostMapping
     suspend fun save(@Valid @RequestBody user: User): ResponseEntity<User> {
         return withContext(Dispatchers.IO) {
+            println("kkk, ${user.name}")
             val response: User?
             try {
                 response = userService.save(user)
@@ -69,6 +73,5 @@ UserController(
             ResponseEntity("Usuario nao encontrado.", HttpStatus.NOT_FOUND)
         }
     }
-
 
 }
