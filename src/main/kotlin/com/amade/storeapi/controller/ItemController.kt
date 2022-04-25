@@ -2,6 +2,7 @@ package com.amade.storeapi.controller
 
 import com.amade.storeapi.model.Constants.SUCCESS
 import com.amade.storeapi.model.Item
+import com.amade.storeapi.model.ItemImage
 import com.amade.storeapi.response.SingleItem
 import com.amade.storeapi.service.ItemService
 import kotlinx.coroutines.Dispatchers
@@ -38,9 +39,12 @@ class ItemController(
     }
 
     @PostMapping
-    suspend fun insert(@Valid @RequestBody item: Item): ResponseEntity<SingleItem> {
+    suspend fun insert(@Valid @RequestBody item: Item, @RequestParam(name = "images",required = true) images: List<String>):
+            ResponseEntity<Any> {
         return withContext(Dispatchers.IO) {
-            val result = itemService.insert(item)
+
+            val result = itemService.insert(item,images)
+
             if (result != null){
                 return@withContext ResponseEntity(result, HttpStatus.CREATED)
             }

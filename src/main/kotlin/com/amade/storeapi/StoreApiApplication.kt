@@ -12,38 +12,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
 @SpringBootApplication
-class StoreApiApplication {
-    @Bean
-    fun initializer(connectionFactory: ConnectionFactory): ConnectionFactoryInitializer {
-        val initializer = ConnectionFactoryInitializer()
-        initializer.setConnectionFactory(connectionFactory)
-        val populator = ResourceDatabasePopulator(ClassPathResource("schema.sql"))
-        initializer.setDatabasePopulator(populator)
-        return initializer
-    }
-
-    @Bean
-    fun corsWebFilter(): CorsWebFilter? {
-        val corsConfig = CorsConfiguration()
-        corsConfig.allowedOrigins = listOf("http://localhost:4200")
-        corsConfig.maxAge = 8000L
-        corsConfig.allowedMethods = listOf(
-            "GET", "PUT", "POST", "DELETE", "OPTION"
-        )
-        corsConfig.allowedHeaders = listOf(
-            "Origin", "Access-Control-Allow-Origin",
-            "Content-Type", "Accept", "Authorization", "Origin, Accept", "X-Requested-With", "Access-Control-Request-Method",
-            "Access-Control-Request-Headers"
-        )
-        corsConfig.exposedHeaders = listOf(
-            "Origin", "Content-Type", "Accept", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"
-        )
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", corsConfig)
-        return CorsWebFilter(source)
-    }
-
-}
+class StoreApiApplication
 
 fun main(args: Array<String>) {
     runApplication<StoreApiApplication>(*args)

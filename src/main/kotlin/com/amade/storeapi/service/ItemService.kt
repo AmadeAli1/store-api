@@ -17,18 +17,26 @@ class ItemService(
     private val companyService: CompanyService,
 ) {
 
-    suspend fun insert(item: Item): SingleItem? {
+    suspend fun insert(item: Item, images: List<String>): SingleItem? {
         val company = companyService.findCompany(item.company)
         val category = categoryService.findCategory(item.category)
         val newItem = itemRepository.save(item);
-        return SingleItem(category, company, newItem)
+
+        images.forEach {
+            itemRepository.insertImages(itemId = newItem.id, image = it)
+        }
+
+        val itemImages = itemRepository.findImages(newItem.id)
+
+        return SingleItem(category, company, newItem, itemImages)
     }
 
     suspend fun update(item: Item): SingleItem {
         return itemRepository.save(item).let {
             val company = companyService.findCompany(it.company)
             val category = categoryService.findCategory(it.category)
-            SingleItem(category!!, company!!, item = it)
+            val itemImages = itemRepository.findImages(it.id)
+            SingleItem(category!!, company!!, item = it, itemImages)
         }
     }
 
@@ -36,7 +44,9 @@ class ItemService(
         return itemRepository.findById(id).let {
             val company = companyService.findCompany(it!!.company)
             val category = categoryService.findCategory(it.category)
-            SingleItem(category!!, company!!, item = it)
+            val itemImages = itemRepository.findImages(it.id)
+
+            SingleItem(category!!, company!!, item = it, images = itemImages)
         }
     }
 
@@ -66,7 +76,8 @@ class ItemService(
             items.map {
                 val company = companyService.findCompany(it.company)
                 val category = categoryService.findCategory(it.category)
-                SingleItem(category!!, company!!, it)
+                val itemImages = itemRepository.findImages(it.id)
+                SingleItem(category!!, company!!, it, images = itemImages)
             }
         } catch (e: Exception) {
             throw RuntimeException(e.message)
@@ -77,7 +88,8 @@ class ItemService(
         return itemRepository.findAll().map {
             val company = companyService.findCompany(it.company)
             val category = categoryService.findCategory(it.category)
-            SingleItem(category!!, company!!, it)
+            val itemImages = itemRepository.findImages(it.id)
+            SingleItem(category!!, company!!, item = it, images = itemImages)
         }
     }
 

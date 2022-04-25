@@ -13,9 +13,8 @@ import javax.validation.constraints.NotNull
 data class Item(
     @field:NotNull @field:NotBlank @field:Length(max = 50, min = 5) @Column("name") val name: String,
     @field:NotNull @field:NotBlank @field:Min(1) @Column("price") var price: Float,
-    @field:NotNull @field:NotBlank @Column("image") var image: String,
     @field:NotNull @field:NotBlank @Column("companyid") var company: Int,
-    @field:NotNull @field:NotBlank @Column("categoryid") var category: Int,
+    @field:NotNull @field:NotBlank @Column("categoryid") var category: Int
 ) {
     @Id
     @Column("id")
