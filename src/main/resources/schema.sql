@@ -46,6 +46,6 @@ CREATE TABLE if not exists usuarioItem
 );
 
 CREATE TABLE if not exists itemimage(
-      itemid integer NOT NULL references item (id) on delete cascade on update cascade
+      itemid integer NOT NULL references item (id) on delete cascade on update cascade,
       image text NOT NULL
 );
