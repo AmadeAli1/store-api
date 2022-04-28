@@ -41,7 +41,6 @@ UserController(
     @PostMapping
     suspend fun save(@Valid @RequestBody user: User): ResponseEntity<User> {
         return withContext(Dispatchers.IO) {
-            println("kkk, ${user.name}")
             val response: User?
             try {
                 response = userService.save(user)
