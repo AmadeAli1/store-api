@@ -28,13 +28,13 @@ UserController(
     }
 
     @GetMapping("/{id}")
-    suspend fun findUser(@PathVariable("id") id: String): ResponseEntity<Any> {
+    suspend fun findUser(@PathVariable("id") id: String): ResponseEntity<User> {
         return withContext(Dispatchers.IO) {
             val response = userService.findUser(id)
             if (response != null) {
-                return@withContext ResponseEntity(response, HttpStatus.FOUND)
+                return@withContext ResponseEntity(response, HttpStatus.OK)
             }
-            ResponseEntity("Usuario nao encontrado",HttpStatus.BAD_REQUEST)
+            ResponseEntity(HttpStatus.BAD_REQUEST)
         }
     }
 
