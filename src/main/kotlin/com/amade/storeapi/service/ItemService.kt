@@ -13,40 +13,38 @@ import org.springframework.stereotype.Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 class ItemService(
     private val itemRepository: ItemRepository,
-    private val categoryService: CategoryService,
-    private val companyService: CompanyService,
+    private val categoryService: CategoryService
 ) {
 
-    suspend fun insert(item: Item, images: List<String>): SingleItem? {
-        val company = companyService.findCompany(item.company)
+    suspend fun insert(item: Item): SingleItem? {
         val category = categoryService.findCategory(item.category)
-        val newItem = itemRepository.save(item);
+        val newItem = itemRepository.save(item)
 
-        images.forEach {
+        item.images.forEach {
             itemRepository.insertImages(itemId = newItem.id, image = it)
         }
 
         val itemImages = itemRepository.findImages(newItem.id)
 
-        return SingleItem(category, company, newItem, itemImages)
+        return SingleItem(category, newItem, itemImages)
     }
 
     suspend fun update(item: Item): SingleItem {
         return itemRepository.save(item).let {
-            val company = companyService.findCompany(it.company)
             val category = categoryService.findCategory(it.category)
             val itemImages = itemRepository.findImages(it.id)
-            SingleItem(category!!, company!!, item = it, itemImages)
+            SingleItem(category!!, item = it, itemImages)
         }
     }
 
     suspend fun findItem(id: Int): SingleItem? {
         return itemRepository.findById(id).let {
-            val company = companyService.findCompany(it!!.company)
+            if(it==null) {
+                throw RuntimeException("Item nao encontrado: ")
+            }
             val category = categoryService.findCategory(it.category)
             val itemImages = itemRepository.findImages(it.id)
-
-            SingleItem(category!!, company!!, item = it, images = itemImages)
+            SingleItem(category!!, item = it, images = itemImages)
         }
     }
 
@@ -74,10 +72,10 @@ class ItemService(
         return try {
             val items = itemRepository.findWhitlistItems(userId = userId)
             items.map {
-                val company = companyService.findCompany(it.company)
+
                 val category = categoryService.findCategory(it.category)
                 val itemImages = itemRepository.findImages(it.id)
-                SingleItem(category!!, company!!, it, images = itemImages)
+                SingleItem(category!!, it, images = itemImages)
             }
         } catch (e: Exception) {
             throw RuntimeException(e.message)
@@ -86,10 +84,9 @@ class ItemService(
 
     suspend fun findAll(): Flow<SingleItem> {
         return itemRepository.findAll().map {
-            val company = companyService.findCompany(it.company)
             val category = categoryService.findCategory(it.category)
             val itemImages = itemRepository.findImages(it.id)
-            SingleItem(category!!, company!!, item = it, images = itemImages)
+            SingleItem(category!!, item = it, images = itemImages)
         }
     }
 

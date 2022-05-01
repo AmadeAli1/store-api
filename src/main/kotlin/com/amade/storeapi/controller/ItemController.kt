@@ -2,7 +2,6 @@ package com.amade.storeapi.controller
 
 import com.amade.storeapi.model.Constants.SUCCESS
 import com.amade.storeapi.model.Item
-import com.amade.storeapi.model.ItemImage
 import com.amade.storeapi.response.SingleItem
 import com.amade.storeapi.service.ItemService
 import kotlinx.coroutines.Dispatchers
@@ -32,22 +31,18 @@ class ItemController(
         return withContext(Dispatchers.IO) {
             val item = itemService.findItem(id)
             if (item != null) {
-                return@withContext ResponseEntity(item, HttpStatus.FOUND)
+                return@withContext ResponseEntity(item, HttpStatus.OK)
             }
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
 
     @PostMapping
-    suspend fun insert(@Valid @RequestBody item: Item, @RequestParam(name = "images",required = true) images: List<String>):
-            ResponseEntity<Any> {
+    suspend fun insert(@Valid @RequestBody item: Item): ResponseEntity<Any> {
         return withContext(Dispatchers.IO) {
-
-            val result = itemService.insert(item,images)
-
-            if (result != null){
-                return@withContext ResponseEntity(result, HttpStatus.CREATED)
-            }
+            if (item.images.isEmpty()) return@withContext ResponseEntity("Requer uma ou mais imagens!!",HttpStatus.BAD_REQUEST)
+            val result = itemService.insert(item)
+            if (result != null) return@withContext ResponseEntity(result, HttpStatus.CREATED)
             ResponseEntity(HttpStatus.BAD_REQUEST)
         }
     }

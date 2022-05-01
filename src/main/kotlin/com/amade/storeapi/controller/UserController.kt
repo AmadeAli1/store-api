@@ -1,6 +1,6 @@
 package com.amade.storeapi.controller
 
-import com.amade.storeapi.model.Constants
+import com.amade.storeapi.model.Constants.SUCCESS
 import com.amade.storeapi.model.User
 import com.amade.storeapi.service.UserService
 import kotlinx.coroutines.Dispatchers
@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.reactive.result.view.Rendering
 import javax.validation.Valid
 
 @RequestMapping("/users")
@@ -58,6 +56,7 @@ UserController(
             if (response != null) {
                 return@withContext ResponseEntity<User>(user, HttpStatus.OK)
             }
+
             ResponseEntity<User>(HttpStatus.BAD_REQUEST)
         }
     }
@@ -66,7 +65,7 @@ UserController(
     suspend fun delete(@PathVariable("id") id: String): ResponseEntity<String> {
         return withContext(Dispatchers.IO) {
             val status = userService.delete(id)
-            if (status == 1) {
+            if (status == SUCCESS) {
                 return@withContext ResponseEntity("Usuario Removido", HttpStatus.OK)
             }
             ResponseEntity("Usuario nao encontrado.", HttpStatus.NOT_FOUND)

@@ -12,6 +12,4 @@ data class User(
     @field:NotBlank @field:NotNull var name: String="",
     @field:Email @field:NotBlank @field:NotNull var email: String="",
     var image: String? = null,
-){
-
-}
+)

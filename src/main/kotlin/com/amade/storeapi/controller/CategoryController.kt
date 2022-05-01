@@ -26,7 +26,7 @@ class CategoryController(
     suspend fun findCategory(@PathVariable("id") id: Int) = withContext(Dispatchers.IO) {
         val category = categoryService.findCategory(id)
         if (category != null) {
-            return@withContext ResponseEntity(category, HttpStatus.FOUND)
+            return@withContext ResponseEntity(category, HttpStatus.OK)
         }
         ResponseEntity(HttpStatus.NOT_FOUND)
     }
