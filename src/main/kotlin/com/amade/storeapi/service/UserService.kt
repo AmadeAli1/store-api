@@ -2,7 +2,7 @@ package com.amade.storeapi.service
 
 import com.amade.storeapi.model.User
 import com.amade.storeapi.repository.UserRepository
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 
 @Service

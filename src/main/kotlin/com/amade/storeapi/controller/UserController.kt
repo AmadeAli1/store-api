@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Sinks
 import javax.validation.Valid
 
 @RequestMapping("/users")
@@ -16,6 +17,7 @@ import javax.validation.Valid
 class
 UserController(
     private val userService: UserService,
+    private val sinks: Sinks.Many<User>
 ) {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -45,6 +47,7 @@ UserController(
             } catch (e: Exception) {
                 return@withContext ResponseEntity<User>(HttpStatus.BAD_REQUEST)
             }
+            sinks.emitNext(response, Sinks.EmitFailureHandler.FAIL_FAST)
             ResponseEntity(response, HttpStatus.CREATED)
         }
     }
