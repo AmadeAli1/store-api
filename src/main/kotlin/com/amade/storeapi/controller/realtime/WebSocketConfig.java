@@ -18,6 +18,7 @@ public class WebSocketConfig {
         return new SimpleUrlHandlerMapping(Map.of("/ws/realtime", wsh), 1);
     }
 
+
     @Bean
     public WebSocketHandlerAdapter webSocketHandlerAdapter() {
         return new WebSocketHandlerAdapter();
