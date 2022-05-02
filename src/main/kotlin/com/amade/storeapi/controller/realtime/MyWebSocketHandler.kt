@@ -1,29 +1,17 @@
-package com.amade.storeapi.controller.realtime;
+package com.amade.storeapi.controller.realtime
 
-import com.amade.storeapi.model.User;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.socket.WebSocketHandler;
-import org.springframework.web.reactive.socket.WebSocketSession;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
+import com.amade.storeapi.model.User
+import org.springframework.stereotype.Component
+import org.springframework.web.reactive.socket.WebSocketHandler
+import org.springframework.web.reactive.socket.WebSocketSession
+import reactor.core.publisher.Mono
+import reactor.core.publisher.Sinks.Many
 
 @Component
-public class MyWebSocketHandler implements WebSocketHandler {
-    private final Sinks.Many<User> sinks;
-
-    @Autowired
-    public MyWebSocketHandler(Sinks.Many<User> sinks) {
-        this.sinks = sinks;
+class MyWebSocketHandler constructor(private val sinks: Many<User>) : WebSocketHandler {
+    override fun handle(session: WebSocketSession): Mono<Void> {
+        val data = sinks.asFlux()
+            .map { user: User -> session.textMessage(user.toString()) }
+        return session.send(data)
     }
-
-    @NotNull
-    @Override
-    public Mono<Void> handle(WebSocketSession session) {
-        var data = sinks.asFlux()
-                .map(user -> session.textMessage(user.toString()));
-        return session.send(data);
-    }
-
 }
