@@ -1,7 +1,7 @@
 package com.amade.storeapi.controller
 
 import com.amade.storeapi.model.Category
-import com.amade.storeapi.model.Constants.SUCCESS
+import com.amade.storeapi.model.constantes.Constants.SUCCESS
 import com.amade.storeapi.service.CategoryService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

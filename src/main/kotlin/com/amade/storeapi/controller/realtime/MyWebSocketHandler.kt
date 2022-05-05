@@ -11,7 +11,7 @@ import reactor.core.publisher.Sinks.Many
 class MyWebSocketHandler constructor(private val sinks: Many<User>) : WebSocketHandler {
     override fun handle(session: WebSocketSession): Mono<Void> {
         val data = sinks.asFlux()
-            .map { user: User -> session.textMessage(user.toString()) }
+            .map { user: User -> session.textMessage(user.toJson()) }
         return session.send(data)
     }
 }

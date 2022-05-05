@@ -1,5 +1,6 @@
 package com.amade.storeapi.model
 
+import com.fasterxml.jackson.databind.json.JsonMapper
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import javax.validation.constraints.Email
@@ -13,3 +14,9 @@ data class User(
     @field:Email @field:NotBlank @field:NotNull var email: String="",
     var image: String? = null,
 )
+{
+    fun toJson():String{
+        val json = JsonMapper().writeValueAsString(this)
+        return json!!
+    }
+}

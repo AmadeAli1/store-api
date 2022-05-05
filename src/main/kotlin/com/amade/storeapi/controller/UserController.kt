@@ -1,6 +1,6 @@
 package com.amade.storeapi.controller
 
-import com.amade.storeapi.model.Constants.SUCCESS
+import com.amade.storeapi.model.constantes.Constants.SUCCESS
 import com.amade.storeapi.model.User
 import com.amade.storeapi.service.UserService
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +30,7 @@ UserController(
     @GetMapping("/{id}")
     suspend fun findUser(@PathVariable("id") id: String): ResponseEntity<User> {
         return withContext(Dispatchers.IO) {
-            val response = userService.findUser(id)
+            val response = userService.findUser(id=id)
             if (response != null) {
                 return@withContext ResponseEntity(response, HttpStatus.OK)
             }
@@ -59,7 +59,6 @@ UserController(
             if (response != null) {
                 return@withContext ResponseEntity<User>(user, HttpStatus.OK)
             }
-
             ResponseEntity<User>(HttpStatus.BAD_REQUEST)
         }
     }
